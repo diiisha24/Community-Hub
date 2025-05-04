@@ -2,7 +2,7 @@
 'use client';
 import React, { useState } from 'react';
 import { communities, currentUser, notifications } from '@/utils/data';
-import { Community, Post, User } from '@/utils/types';
+import { Community, Post, User, Event } from '@/utils/types';
 import Image from 'next/image';
 
 // Component for sidebar
@@ -65,7 +65,7 @@ const Sidebar: React.FC = () => {
           <ul>
             {communities.map((community) => (
               <li key={community.id} className="mb-1">
-                <a href="#" className="block py-2 px-4 rounded hover:bg-gray-700 flex items-center">
+                <a href="#" className="py-2 px-4 rounded hover:bg-gray-700 flex items-center">
                   <div className="w-6 h-6 rounded overflow-hidden mr-2">
                     <Image 
                       src={community.coverImage} 
@@ -163,7 +163,7 @@ const PostItem: React.FC<{ post: Post }> = ({ post }) => {
           />
         </div>
         <div>
-          <h3 className="font-medium">{post.author.name}</h3>
+          <h3 className="font-medium text-gray-700">{post.author.name}</h3>
           <p className="text-xs text-gray-500">
             {new Date(post.createdAt).toLocaleDateString()} • {post.community.name}
           </p>
@@ -171,7 +171,7 @@ const PostItem: React.FC<{ post: Post }> = ({ post }) => {
       </div>
       
       {/* Post content */}
-      <p className="mb-4">{post.content}</p>
+      <p className="mb-4 text-gray-500">{post.content}</p>
       
       {/* Post actions */}
       <div className="flex justify-between items-center border-t border-b py-2 mb-3">
@@ -215,8 +215,8 @@ const PostItem: React.FC<{ post: Post }> = ({ post }) => {
                 />
               </div>
               <div className="bg-gray-100 p-2 rounded-lg flex-grow">
-                <h4 className="font-medium text-sm">{comment.author.name}</h4>
-                <p className="text-sm">{comment.content}</p>
+                <h4 className="font-medium text-gray-700 text-sm">{comment.author.name}</h4>
+                <p className="text-sm text-gray-500">{comment.content}</p>
               </div>
             </div>
           ))}
@@ -236,7 +236,7 @@ const PostItem: React.FC<{ post: Post }> = ({ post }) => {
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               placeholder="Write a comment..."
-              className="flex-grow rounded-full border border-gray-300 py-1 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="flex-grow rounded-full border text-gray-500 border-gray-300 py-1 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </form>
         </div>
@@ -297,36 +297,36 @@ const EventCard: React.FC<{ event: Event }> = ({ event }) => {
 };
 
 // Component for member list
-const MemberList: React.FC<{ community: Community }> = ({ community }) => {
-  return (
-    <div className="bg-white rounded-lg shadow-md p-4 mb-4">
-      <h3 className="font-medium text-lg mb-4">Members ({community.memberCount})</h3>
-      <div className="space-y-3">
-        {community.members.map((member) => (
-          <div key={member.id} className="flex items-center">
-            <div className="w-10 h-10 rounded-full overflow-hidden mr-3">
-              <Image 
-                src={member.avatar} 
-                alt={member.name} 
-                width={40} 
-                height={40} 
-              />
-            </div>
-            <div className="flex-grow">
-              <h4 className="font-medium">{member.name}</h4>
-              <p className="text-xs text-gray-500">
-                Joined {new Date(member.joinedAt).toLocaleDateString()}
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
-      <button className="mt-4 w-full py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition">
-        View All Members
-      </button>
-    </div>
-  );
-};
+// const MemberList: React.FC<{ community: Community }> = ({ community }) => {
+//   return (
+//     <div className="bg-white rounded-lg shadow-md p-4 mb-4">
+//       <h3 className="font-medium text-lg mb-4">Members ({community.memberCount})</h3>
+//       <div className="space-y-3">
+//         {community.members.map((member) => (
+//           <div key={member.id} className="flex items-center">
+//             <div className="w-10 h-10 rounded-full overflow-hidden mr-3">
+//               <Image 
+//                 src={member.avatar} 
+//                 alt={member.name} 
+//                 width={40} 
+//                 height={40} 
+//               />
+//             </div>
+//             <div className="flex-grow">
+//               <h4 className="font-medium text-gray-500">{member.name}</h4>
+//               <p className="text-xs text-gray-500">
+//                 Joined {new Date(member.joinedAt).toLocaleDateString()}
+//               </p>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//       <button className="mt-4 w-full py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition">
+//         View All Members
+//       </button>
+//     </div>
+//   );
+// };
 
 // Component for community header
 const CommunityHeader: React.FC<{ community: Community }> = ({ community }) => {
@@ -343,7 +343,7 @@ const CommunityHeader: React.FC<{ community: Community }> = ({ community }) => {
       <div className="p-4">
         <div className="flex justify-between items-start">
           <div>
-            <h2 className="text-2xl text-emerald-900 font-bold">{community.name}</h2>
+            <h2 className="text-2xl text-gray-900 font-bold">{community.name}</h2>
             <p className="text-gray-600">{community.description}</p>
           </div>
           <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
@@ -352,15 +352,15 @@ const CommunityHeader: React.FC<{ community: Community }> = ({ community }) => {
         </div>
         <div className="flex mt-4">
           <div className="mr-6">
-            <span className="font-bold">{community.memberCount}</span>
+            <span className="font-bold text-gray-400">{community.memberCount}</span>
             <span className="text-gray-600 ml-1">Members</span>
           </div>
           <div className="mr-6">
-            <span className="font-bold">{community.posts.length}</span>
+            <span className="font-bold text-gray-400">{community.posts.length}</span>
             <span className="text-gray-600 ml-1">Posts</span>
           </div>
           <div>
-            <span className="font-bold">{community.events.length}</span>
+            <span className="font-bold text-gray-400">{community.events.length}</span>
             <span className="text-gray-600 ml-1">Events</span>
           </div>
         </div>
@@ -397,7 +397,7 @@ const CreatePostForm: React.FC = () => {
             value={postContent}
             onChange={(e) => setPostContent(e.target.value)}
             placeholder="What's on your mind?"
-            className="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-grow p-3 text-gray-400 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             rows={3}
           ></textarea>
         </div>
@@ -512,7 +512,7 @@ export default function Home() {
                           />
                         </div>
                         <div>
-                          <h4 className="font-medium">{member.name}</h4>
+                          <h4 className="font-medium text-gray-700">{member.name}</h4>
                           <p className="text-sm text-gray-500">
                             Joined {new Date(member.joinedAt).toLocaleDateString()}
                           </p>
@@ -554,7 +554,7 @@ export default function Home() {
               {/* Popular communities */}
               <div className="bg-white rounded-lg shadow-md p-4 mb-4">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="font-medium text-lg">Popular Communities</h3>
+                  <h3 className="font-medium text-lg text-gray-900">Popular Communities</h3>
                   <a href="#" className="text-sm text-blue-600">Explore</a>
                 </div>
                 {communities.map((community) => (
@@ -572,7 +572,7 @@ export default function Home() {
                       />
                     </div>
                     <div className="flex-grow">
-                      <h4 className="font-medium">{community.name}</h4>
+                      <h4 className="font-medium text-gray-600">{community.name}</h4>
                       <p className="text-xs text-gray-500">{community.memberCount} members</p>
                     </div>
                   </div>
@@ -582,12 +582,12 @@ export default function Home() {
               {/* Notifications */}
               <div className="bg-white rounded-lg shadow-md p-4">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="font-medium text-lg">Notifications</h3>
+                  <h3 className="font-medium text-lg text-gray-900">Notifications</h3>
                   <a href="#" className="text-sm text-blue-600">Mark All Read</a>
                 </div>
                 {notifications.map((notification) => (
                   <div key={notification.id} className={`p-2 mb-2 rounded-lg ${notification.read ? 'bg-white' : 'bg-blue-50'}`}>
-                    <p className="text-sm">{notification.content}</p>
+                    <p className="text-sm text-gray-700">{notification.content}</p>
                     <p className="text-xs text-gray-500 mt-1">
                       {new Date(notification.createdAt).toLocaleDateString()}
                     </p>
